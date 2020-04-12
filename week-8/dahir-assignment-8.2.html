@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+; Title: Assignment 8.2
+; Author: Zach Dahir
+; Date: 4-08-20
+; Description: CR Example
+-->
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <title>Exercise 8.2</title>
+
+    <!-- Stylesheet - Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+      integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+      crossorigin="anonymous"
+    />
+
+    <!-- JavaScript Libraries -->
+    <script
+      type="text/javascript"
+      src="https://gc.kis.v2.scr.kaspersky-labs.com/5DACB2B0-5003-6543-8B39-D8EE6E4FC44C/main.js"
+      charset="UTF-8"
+    ></script>
+    <script src="../knockout-v3.5.1.js"></script>
+  </head>
+
+  <body>
+<div class="container">
+    <br><br>
+
+    <h2>CR Example</h2>
+    <br>
+
+    <div class="row" data-bind="if: error">
+        <div class="col-sm-12">
+            <div class="alert alert-danger" role="alert">
+                <!-- bind error to span -->
+                <strong>Warning! </strong><span data-bind="text: error()"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card card-inverse" style="background-color: #333; border-color: #333; color: white;">
+                <div class="card-block p-3">
+                    <h3 class="card-title">Employee List</h3>
+                    <div class="card-text">
+                        <div class="form-group row">
+                            <label for="txtEmployee" class="col-4 col-form-label">Employee: </label>
+                            <div class="col-6">
+                                <!-- create text input bound to name to add-->
+                                <input type="text" data-bind="value: nameToAdd, valueUpdate: 'afterkeydown'" class="form-control" id="txtEmployee"/>
+                            </div>
+                            <div class="col-4">
+                                <!-- submit button that will add input to array -->
+                                <a href="#" data-bind="click: add" class="btn btn-primary">Add</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEmployeeList">Employee List: </label>
+                        <!-- display array -->
+                        <select size="10" class="form-control" data-bind="options: employeeList" id="txtEmployeeList"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+    <script>
+    //create ViewModel with 3 observables
+    function EmployeeViewModel(){
+        this.nameToAdd = ko.observable("");
+        this.employeeList = ko.observableArray(["Zach", "Jake", "Josh", "Sarah"]);
+        this.error = ko.observable("");
+
+        //function to add new name to observable array
+        this.add = function(){
+            if ((this.nameToAdd() !== "") && 
+            (this.employeeList.indexOf(this.nameToAdd()) < 0)){
+                this.error("");
+                //push new name to array
+                this.employeeList.push(this.nameToAdd());
+            }
+                else {
+                this.error("Duplicate or Invalid Entry.");
+            }
+            this.nameToAdd("");
+        };
+    }
+
+        //apply bindings
+        ko.applyBindings(new EmployeeViewModel());
+    </script>
+
+  </body>
+
+</html>
